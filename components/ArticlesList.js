@@ -5,8 +5,10 @@ import { ARTICLES_QUERY, ARTICLE_ADDED_SUBSCRIPTION } from '../graphql/modules/a
 
 class ArticlesList extends Component {
 
-    componentWillMount() {
-        this.props.subscribeToNewArticles();
+    componentDidUpdate(prevProps, prevState) {
+        if(!this.props.data.loading && this.props.data.articles && !this.unsubscribe) {
+            this.unsubscribe = this.props.subscribeToNewArticles();
+        }
     }
 
     displayOnLoading = () => <div>Récupération des articles</div>
@@ -21,23 +23,15 @@ class ArticlesList extends Component {
 }
 
 export default graphql(ARTICLES_QUERY, {
-    name: 'data',
     props: (props) => {
         return {
             subscribeToNewArticles: () => {
                 return props.data.subscribeToMore({
-                    onError: (err) => console.error(err),
                     document: ARTICLE_ADDED_SUBSCRIPTION,
                     updateQuery: (prev, { subscriptionData }) => {
-                        console.log(prev, subscriptionData);
-                        //prev = {Symbol(id): "ROOT_QUERY"}
-                        if (!subscriptionData.data.articleAdded) {
-                            return prev
-                        }
+                        const newArticle = subscriptionData.data.articleAdded;
 
-                        const newFeedItem = subscriptionData.data.articleAdded;
-
-                        return Object.assign({}, prev, { articles: [newFeedItem, ...prev.articles] });
+                        return newArticle ? { ...prev, articles: [newArticle, ...prev.articles]} : prev;
                     }
                 });
             },
