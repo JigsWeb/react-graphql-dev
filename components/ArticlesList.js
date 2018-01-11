@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 
-import { ARTICLES_QUERY, ARTICLE_ADDED_SUBSCRIPTION } from '../graphql/modules/article';
+import { ARTICLES_QUERY, subscribeArticleConfig } from '../graphql/modules/article';
 
 class ArticlesList extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if(!this.props.data.loading && this.props.data.articles && !this.unsubscribe) {
-            this.unsubscribe = this.props.subscribeToNewArticles();
+            this.unsubscribe = this.props.subscribeArticle();
         }
     }
 
@@ -23,19 +23,8 @@ class ArticlesList extends Component {
 }
 
 export default graphql(ARTICLES_QUERY, {
-    props: (props) => {
-        return {
-            subscribeToNewArticles: () => {
-                return props.data.subscribeToMore({
-                    document: ARTICLE_ADDED_SUBSCRIPTION,
-                    updateQuery: (prev, { subscriptionData }) => {
-                        const newArticle = subscriptionData.data.articleAdded;
-
-                        return newArticle ? { ...prev, articles: [newArticle, ...prev.articles]} : prev;
-                    }
-                });
-            },
-            ...props
-        };
-    },
+    props: (props) => ({
+        subscribeArticle: () => props.data.subscribeToMore(subscribeArticleConfig),
+        ...props
+    }),
 })(ArticlesList);
