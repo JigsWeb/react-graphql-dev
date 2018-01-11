@@ -9,7 +9,7 @@ import fetch from 'node-fetch';
 import { SUBSCRIPTION_HOST, GRAPHQL_HOST } from '../config';
 
 let link = new HttpLink({ uri: GRAPHQL_HOST, fetch: fetch });
-
+console.log(process.browser)
 if(process.browser) {
     const wsLink = new WebSocketLink({
         uri: SUBSCRIPTION_HOST,
@@ -18,9 +18,10 @@ if(process.browser) {
         },
     });
 
-    const link = split(
+    link = split(
         ({ query }) => {
             const { kind, operation } = getMainDefinition(query);
+            console.log("QUERY", query)
             return kind === 'OperationDefinition' && operation === 'subscription';
         },
         wsLink,

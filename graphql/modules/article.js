@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
-export const articlesListQuery = gql`
-  query ArticlesListQuery {
+export const ARTICLES_QUERY = gql`
+  query articles {
     articles {
       id
       title
@@ -9,8 +9,8 @@ export const articlesListQuery = gql`
   }
 `;
 
-export const articleAddedSubscription = gql`
-  subscription articleAdded($channelId: ID!) {
+export const ARTICLE_ADDED_SUBSCRIPTION = gql`
+  subscription articleAdded {
     articleAdded {
       id  
       title
