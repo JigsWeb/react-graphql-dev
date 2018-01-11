@@ -30,7 +30,8 @@ export default graphql(ARTICLES_QUERY, {
                     document: ARTICLE_ADDED_SUBSCRIPTION,
                     updateQuery: (prev, { subscriptionData }) => {
                         console.log(prev, subscriptionData);
-                        if (!subscriptionData.data) {
+                        //prev = {Symbol(id): "ROOT_QUERY"}
+                        if (!subscriptionData.data.articleAdded) {
                             return prev
                         }
 
