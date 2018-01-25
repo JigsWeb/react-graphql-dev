@@ -3,18 +3,14 @@ import { graphql, ApolloProvider } from 'react-apollo';
 
 import apolloClient from '../graphql/apolloClient'
 
-import ArticlesList from '../components/ArticlesList';
+import ArticleList from '../components/Article/List';
 
 class App extends Component {
 
     render() {
         return (
             <ApolloProvider client={apolloClient}>
-                <div>
-                    <h1>Articles</h1>
-
-                    <ArticlesList />
-                </div>
+                <ArticleList />
             </ApolloProvider>
         );
     }
