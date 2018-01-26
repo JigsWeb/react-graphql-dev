@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import CommentFormWrapper from './wrapper';
+
 export default class CommentForm extends Component {
     state = {  
         text: "",
@@ -11,7 +13,7 @@ export default class CommentForm extends Component {
 
     render() {
         return (
-            <div>
+            <CommentFormWrapper>
                 <textarea 
                     name="text" 
                     placeholder="Your comment here.." 
@@ -19,7 +21,7 @@ export default class CommentForm extends Component {
                     onChange={this._handleTextOnChange}
                 />
                 <button onClick={this._handleFormOnSubmit}>Send</button>
-            </div>
+            </CommentFormWrapper>
         );
     }
 }

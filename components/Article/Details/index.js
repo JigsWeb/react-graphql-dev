@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 
+import ArticleDetailsWrapper from './wrapper';
 import CommentList from '../../Comment/List';
 import CommentForm from '../../Comment/Form';
 
@@ -33,13 +34,15 @@ class ArticleDetails extends Component {
         }
 
         return (
-            <div>
-                <div>{articleDetailsData.article.title}</div>
+            <ArticleDetailsWrapper>
+                <h1>{articleDetailsData.article.title}</h1>
 
-                <h3>Commentaires:</h3>
+                <p>{articleDetailsData.article.text}</p>
+
+                <h2>Commentaires</h2>
                 
                 {this._renderComments()}
-            </div>
+            </ArticleDetailsWrapper>
         )
     }
 }

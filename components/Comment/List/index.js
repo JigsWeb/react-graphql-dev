@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
+import CommentListWrapper from './wrapper';
+
 class CommentList extends Component {
     render() {
         const { loading, error, article } = this.props;
@@ -13,17 +15,20 @@ class CommentList extends Component {
         const comments = article.comments;
 
         if(!comments.length) {
-            return <div>Aucun commentaire</div>
+            return <div className="no-comments">Aucun commentaire</div>
         }
 
         return (
-            <div>
+            <CommentListWrapper>
                 <ul>
                     {comments.map(c => (
-                        <li key={c.id}>{c.text} par {c.author.firstName} {c.author.lastName}</li>
+                        <li key={c.id}>
+                            <span className="text">{c.text}</span> 
+                            <span className="author">{c.author.firstName} {c.author.lastName}</span>
+                        </li>
                     ))}
                 </ul>
-            </div>
+            </CommentListWrapper>
         )
     }
 }
